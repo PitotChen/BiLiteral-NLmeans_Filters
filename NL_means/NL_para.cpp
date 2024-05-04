@@ -26,7 +26,7 @@ void processBlock(const Mat& src, Mat& dst, int startRow, int endRow, int templa
                 continue;
             }
             
-            // 分别为BGR三个通道创建加权和矩阵
+
             Mat weightedSumB = Mat::zeros(templateWindowSize, templateWindowSize, src.type());
             Mat weightedSumG = Mat::zeros(templateWindowSize, templateWindowSize, src.type());
             Mat weightedSumR = Mat::zeros(templateWindowSize, templateWindowSize, src.type());
@@ -40,9 +40,9 @@ void processBlock(const Mat& src, Mat& dst, int startRow, int endRow, int templa
                     float distance = calculatePatchDistance(src(Rect(j, i, templateWindowSize, templateWindowSize)), searchPatch);
                     float weight = exp(-distance / (h * h));
                     Vec3f centerPixel = src.at<Vec3f>(y + halfTemplateWindow, x + halfTemplateWindow);
-                    // 为BGR三个通道分别累加权重
-                    float centerPixelB = centerPixel[0]; // 蓝色分量
-                    float centerPixelG = centerPixel[1]; // 绿色分量
+
+                    float centerPixelB = centerPixel[0]; 
+                    float centerPixelG = centerPixel[1]; 
                     float centerPixelR = centerPixel[2];
                     // weightedSumB += searchPatch * weight;
                     // weightedSumG += searchPatch * weight;
@@ -54,7 +54,7 @@ void processBlock(const Mat& src, Mat& dst, int startRow, int endRow, int templa
                 }
             }
 
-            // 计算BGR三个通道的加权平均值
+
             if (totalWeight > 0) {
                 Vec3f weightedAverage = Vec3f(
                     sum(weightedSumB)[0] / totalWeight, 
@@ -77,13 +77,13 @@ void processBlock(const Mat& src, Mat& dst, int startRow, int endRow, int templa
 
 //     for (int i = startRow; i < endRow; ++i) {
 //         for (int j = 0; j < width; ++j) {
-//             // 检查当前像素的补丁是否符合预期的尺寸
+//          
 //             if ((i + templateWindowSize > height) || (j + templateWindowSize > width)) {
-//                 continue; // 如果补丁尺寸超出图像边界，则跳过
+//                 continue; 
 //             }
 //             Mat patchCenter = src(Rect(j, i, templateWindowSize, templateWindowSize));
 //             if (patchCenter.rows != templateWindowSize || patchCenter.cols != templateWindowSize) {
-//                 continue; // 如果补丁尺寸不正确，跳过
+//                 continue; 
 //             }
 
 //             Mat weightedSum = Mat::zeros(templateWindowSize, templateWindowSize, src.type());
